@@ -1,0 +1,13 @@
+body {
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#container {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background-color: #000;
+  overflow: hidden;
+}
