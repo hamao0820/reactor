@@ -1,0 +1,102 @@
+@startuml
+abstract class GameObject {
+    +#element: HTMLDivElement
+    +#x: number
+    +#y: number
+    +setPosition(x: number, y: number): void
+    +element: HTMLDivElement
+    +x: number
+    +y: number
+    +text: string
+    +{static} size: 30
+}
+abstract class EnemyObject extends GameObject {
+    +#removed: boolean
+    +#timer: number
+    +remove(): void
+    +tick(): void
+    +isInvincible: boolean
+    +removed: boolean
+}
+class Reactor extends EnemyObject {
+    +{static} create(): Reactor
+}
+class Field {
+    +{static} #width: 300
+    +{static} #height: 300
+    +{static} #bulletList: Bullet[]
+    +{static} #reactorList: Reactor[]
+    +{static} #container: HTMLDivElement
+    +{static} init(): void
+    +{static} append(obj: GameObject): void
+    +{static} width: number
+    +{static} height: number
+}
+class Bullet extends EnemyObject {
+    +#dx: number
+    +#dy: number
+    +#removed: boolean
+    +#speed: 5
+    +setDelta(dx: number, dy: number): void
+    +remove(): void
+    +move(): void
+    +reflectX(): void
+    +reflectY(): void
+    +removed: boolean
+    +dy: number
+    +dx: number
+}
+class CollisionJudger {
+    +#ratio: number
+    +check(a: GameObject, b: GameObject): boolean
+    +{static} heroAndBulletCollisionRatio: 0.3
+    +{static} reactorAndBulletCollisionRatio: 0.9
+    +{static} initHeroAndBulletCollisionJudger(): CollisionJudger
+    +{static} initReactorAndBulletCollisionJudger(): CollisionJudger
+}
+class Counter extends GameObject {
+    +#time: number
+    +#startTime: number
+    +tick(): void
+    +time: number
+    +countDown: number
+}
+class Hero extends GameObject
+class Controller {
+    +{static} #originalHeroX: number
+    +{static} #originalPageX: number
+    +{static} init(hero: Hero, counter: Counter): void
+}
+class Score {
+    +{static} #score: number
+    +{static} #element: HTMLDivElement
+    +{static} init(): void
+    +{static} addScore(): void
+}
+class Game {
+    +#hero: Hero
+    +#counter: Counter
+    +#bulletList: Bullet[]
+    +#reactorList: Reactor[]
+    +#gameOver: boolean
+    +#p: number
+    +#heroAndBulletCollisionJudger: CollisionJudger
+    +#reactorAndBulletCollisionJudger: CollisionJudger
+    -createReactor(): void
+    -createBullet(x: number, y: number, dx: number, dy: number): void
+    -step(): void
+    +start(): Promise<void>
+}
+class Main
+Field --> "*" Bullet
+Field --> "*" Reactor
+Field --> "1" GameObject
+CollisionJudger --> "1" GameObject
+Controller --> "1" Hero
+Controller --> "1" Counter
+Game --> "1" Hero
+Game --> "1" Counter
+Game --> "*" Bullet
+Game --> "*" Reactor
+Game --> "1" CollisionJudger
+@enduml
